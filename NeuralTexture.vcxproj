@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{151d1f07-e5d8-40be-a9b9-a26895018be9}</ProjectGuid>
+    <RootNamespace>NeuralTexture</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>NeuralTextureView</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);USE_PIX</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>XTK12\inc\;ThirdParty;</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+      <Message>
+      </Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);USE_PIX;PROFILE;</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>XTK12\inc\;ThirdParty;</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PreBuildEvent>
+      <Command>call robocopy $(ProjectDir)textures $(OutputPath)\textures\ /E /MIR
+call robocopy $(ProjectDir)shaders $(OutputPath)\shaders\ /E /MIR</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>copy resources</Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="AppState.cpp" />
+    <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="ImguiHandler.cpp" />
+    <ClCompile Include="imgui\imgui.cpp" />
+    <ClCompile Include="imgui\imgui_demo.cpp" />
+    <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="imgui\imgui_impl_dx12.cpp" />
+    <ClCompile Include="imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="imgui\imgui_tables.cpp" />
+    <ClCompile Include="imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Material.cpp" />
+    <ClCompile Include="NeuralModel.cpp" />
+    <ClCompile Include="PSO.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="StructuredBuffer.cpp" />
+    <ClCompile Include="Texture2D.cpp" />
+    <ClCompile Include="thirdparty\DDSTextureLoader12.cpp" />
+    <ClCompile Include="thirdparty\WICTextureLoader12.cpp" />
+    <ClCompile Include="Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AppState.h" />
+    <ClInclude Include="Graphics.h" />
+    <ClInclude Include="ImGuiHandler.h" />
+    <ClInclude Include="imgui\imconfig.h" />
+    <ClInclude Include="imgui\imgui.h" />
+    <ClInclude Include="imgui\imgui_impl_dx12.h" />
+    <ClInclude Include="imgui\imgui_impl_win32.h" />
+    <ClInclude Include="imgui\imgui_internal.h" />
+    <ClInclude Include="imgui\imstb_rectpack.h" />
+    <ClInclude Include="imgui\imstb_textedit.h" />
+    <ClInclude Include="imgui\imstb_truetype.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="NeuralModel.h" />
+    <ClInclude Include="PSO.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="StructuredBuffer.h" />
+    <ClInclude Include="Texture2D.h" />
+    <ClInclude Include="thirdparty\DDSTextureLoader12.h" />
+    <ClInclude Include="thirdparty\nlohmann\adl_serializer.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\byte_container_with_subtype.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\abi_macros.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\conversions\from_json.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\conversions\to_chars.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\conversions\to_json.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\exceptions.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\hash.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\input\binary_reader.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\input\input_adapters.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\input\json_sax.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\input\lexer.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\input\parser.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\input\position_t.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\iterators\internal_iterator.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\iterators\iteration_proxy.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\iterators\iterator_traits.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\iterators\iter_impl.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\iterators\json_reverse_iterator.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\iterators\primitive_iterator.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\json_custom_base_class.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\json_pointer.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\json_ref.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\macro_scope.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\macro_unscope.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\meta\call_std\begin.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\meta\call_std\end.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\meta\cpp_future.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\meta\detected.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\meta\identity_tag.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\meta\is_sax.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\meta\std_fs.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\meta\type_traits.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\meta\void_t.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\output\binary_writer.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\output\output_adapters.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\output\serializer.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\string_concat.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\string_escape.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\string_utils.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\detail\value_t.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\json.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\json_fwd.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\ordered_map.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\thirdparty\hedley\hedley.hpp" />
+    <ClInclude Include="thirdparty\nlohmann\thirdparty\hedley\hedley_undef.hpp" />
+    <ClInclude Include="thirdparty\WICTextureLoader12.h" />
+    <ClInclude Include="Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shaders\NeuralNetwork.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Shaders\PixelShader.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">6.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">6.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\VertexShader.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\WinPixEventRuntime.1.0.240308001\build\WinPixEventRuntime.targets" Condition="Exists('packages\WinPixEventRuntime.1.0.240308001\build\WinPixEventRuntime.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\WinPixEventRuntime.1.0.240308001\build\WinPixEventRuntime.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\WinPixEventRuntime.1.0.240308001\build\WinPixEventRuntime.targets'))" />
+  </Target>
+</Project>
