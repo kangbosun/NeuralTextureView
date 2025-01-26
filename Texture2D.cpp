@@ -32,6 +32,8 @@ void Texture2D::Release()
 
 std::shared_ptr<Texture2D> Texture2D::CreateFromFile(D3D12GraphicsDevice& device, const wchar_t* filename)
 {
+	std::wcout << "Loading texture: " << filename << std::endl;
+
 	//filename to fullpath
 	wchar_t fullpath[MAX_PATH];
 	GetFullPathName(filename, MAX_PATH, fullpath, 0);
@@ -120,6 +122,8 @@ std::shared_ptr<Texture2D> Texture2D::CreateFromFile(D3D12GraphicsDevice& device
 	std::filesystem::path path = fullpath;
 	texture->compressedByteSize = (UINT)std::filesystem::file_size(path);
 
+	std::wcout << "Texture loaded: " << texture->name << std::endl;
+
 	return texture;
 }
 
@@ -187,6 +191,8 @@ std::shared_ptr<Texture2D> Texture2D::CreateFromMemory(D3D12GraphicsDevice& devi
 
 std::shared_ptr<Texture2D> Texture2D::CreateFromDDS(D3D12GraphicsDevice& device, const wchar_t* filename)
 {
+	std::wcout << L"Creating texture from DDS: " << filename << std::endl;
+
 	std::shared_ptr<Texture2D> texture = std::make_shared<Texture2D>();
 	//filename to fullpath
 	wchar_t fullpath[MAX_PATH];
@@ -253,6 +259,9 @@ std::shared_ptr<Texture2D> Texture2D::CreateFromDDS(D3D12GraphicsDevice& device,
 	//get file size using std::filesystem
 	std::filesystem::path path = fullpath;
 	texture->compressedByteSize = (UINT)std::filesystem::file_size(path);
+
+	std::wcout << "Texture loaded: " << texture->name << std::endl;
+
 	return texture;
 
 }

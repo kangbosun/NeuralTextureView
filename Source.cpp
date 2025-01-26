@@ -119,22 +119,28 @@ struct PerformanceStats
 PerformanceStats gPerformanceStats;
 
 //extract function draw texture info to imgui
-void DrawTextureInfo(const Texture2D& texture)
+void DrawTextureInfo(TextureSlot& textureSlot)
 {
 	//get name from texture, wstring to string
 	std::string name;
-	name.assign(texture.name.begin(), texture.name.end());
+	name.assign(textureSlot.name.begin(), textureSlot.name.end());
 	//draw texture name
 	ImGui::Text(name.c_str());
 
-	ImGui::Image(texture.gpuHandle.ptr, ImVec2(128, 128));
+	ImGui::Image(textureSlot.texture->gpuHandle.ptr, ImVec2(128, 128));
+
+	ImGui::SameLine();
+
+	std::string checkboxName = "##" + name;
+	ImGui::Checkbox(checkboxName.c_str(), &textureSlot.bEnable);
+
 	//width, height, format in a line
-	auto Desc = texture.GetDesc();
+	auto Desc = textureSlot.texture->GetDesc();
 	ImGui::Text("%dx%d(%ls)", Desc.Width, Desc.Height, Desc.Format.c_str());
 
 	//byte size in MB
-	float uncompressedMB = (float)texture.uncompressedByteSize / 1024.0f / 1024.0f;
-	float compressedMB = (float)texture.compressedByteSize / 1024.0f / 1024.0f;
+	float uncompressedMB = (float)textureSlot.texture->uncompressedByteSize / 1024.0f / 1024.0f;
+	float compressedMB = (float)textureSlot.texture->compressedByteSize / 1024.0f / 1024.0f;
 	ImGui::Text("SizeInMem: %.2fMB", uncompressedMB);
 
 }
@@ -155,6 +161,8 @@ void ImGuiTextureCheckBox(bool& bEnable, const std::string& name, std::shared_pt
 		}
 	}
 }
+
+void DrawImGui(ImGuiHandler& ImGuiHandler, D3D12GraphicsDevice& device, Window& window, FrameTimer& frameTimer, std::unordered_map<std::string, MaterialPtr>& materialMap, MaterialPtr& CurrentMaterial);
 
 void main(int argc, char** argv)
 {
@@ -196,10 +204,10 @@ void main(int argc, char** argv)
 	auto RoughnessTexture = Texture2D::CreateFromFile(device, L"textures/PavingStones131_4K-Roughness.png");
 
 	MaterialPtr material_4K_png = std::make_shared<Material>();
-	material_4K_png->textures.push_back(Texture4K);
-	material_4K_png->textures.push_back(NormalTexture);
-	material_4K_png->textures.push_back(AOTexture);
-	material_4K_png->textures.push_back(RoughnessTexture);
+	material_4K_png->SetTexture(0, Texture4K, "Albeo");
+	material_4K_png->SetTexture(1, NormalTexture, "Normals");
+	material_4K_png->SetTexture(2, AOTexture, "AO");
+	material_4K_png->SetTexture(3, RoughnessTexture, "Roughness");
 
 	material_4K_png->vertexShader = ShaderMap::Get().GetShader<VertexShader>(device, "FullScreenRectVS");
 	material_4K_png->pixelShader = ShaderMap::Get().GetShader<PixelShader>(device, "FullScreenRectPS");
@@ -212,10 +220,10 @@ void main(int argc, char** argv)
 	auto Roughness4KDDS = Texture2D::CreateFromDDS(device, L"textures/4K_DDS/PavingStones131_4K-Roughness.dds");
 
 	MaterialPtr material_4K_dds = std::make_shared<Material>();
-	material_4K_dds->textures.push_back(Texture4KDDS);
-	material_4K_dds->textures.push_back(Normal4KDDS);
-	material_4K_dds->textures.push_back(AO4KDDS);
-	material_4K_dds->textures.push_back(Roughness4KDDS);
+	material_4K_dds->SetTexture(0, Texture4KDDS, "Albeo");
+	material_4K_dds->SetTexture(1, Normal4KDDS, "Normals");
+	material_4K_dds->SetTexture(2, AO4KDDS, "AO");
+	material_4K_dds->SetTexture(3, Roughness4KDDS, "Roughness");
 
 	material_4K_dds->vertexShader = ShaderMap::Get().GetShader<VertexShader>(device, "FullScreenRectVS");
 	material_4K_dds->pixelShader = ShaderMap::Get().GetShader<PixelShader>(device, "FullScreenRectPS");
@@ -228,10 +236,10 @@ void main(int argc, char** argv)
 	auto Roughness1KDDS = Texture2D::CreateFromDDS(device, L"textures/1K_DDS/PavingStones131_1K-Roughness.dds");
 
 	MaterialPtr material_1K_dds = std::make_shared<Material>();
-	material_1K_dds->textures.push_back(Texture1KDDS);
-	material_1K_dds->textures.push_back(Normal1KDDS);
-	material_1K_dds->textures.push_back(AO1KDDS);
-	material_1K_dds->textures.push_back(Roughness1KDDS);
+	material_1K_dds->SetTexture(0, Texture1KDDS, "Albeo");
+	material_1K_dds->SetTexture(1, Normal1KDDS, "Normals");
+	material_1K_dds->SetTexture(2, AO1KDDS, "AO");
+	material_1K_dds->SetTexture(3, Roughness1KDDS, "Roughness");
 
 	material_1K_dds->vertexShader = ShaderMap::Get().GetShader<VertexShader>(device, "FullScreenRectVS");
 	material_1K_dds->pixelShader = ShaderMap::Get().GetShader<PixelShader>(device, "FullScreenRectPS");
@@ -244,10 +252,10 @@ void main(int argc, char** argv)
 	auto featuregrid3 = Texture2D::CreateFromDDS(device, L"textures/NeuralCompressed/v23/compressed3.dds");
 	
 	auto material_1k_neural = std::make_shared<NeuralTextureMaterial>();
-	material_1k_neural->textures.push_back(featuregrid0);
-	material_1k_neural->textures.push_back(featuregrid1);
-	material_1k_neural->textures.push_back(featuregrid2);
-	material_1k_neural->textures.push_back(featuregrid3);
+	material_1k_neural->SetTexture(0, featuregrid0, "FeatureGrid0");
+	material_1k_neural->SetTexture(1, featuregrid1, "FeatureGrid1");
+	material_1k_neural->SetTexture(2, featuregrid2, "FeatureGrid2");
+	material_1k_neural->SetTexture(3, featuregrid3, "FeatureGrid3");
 
 	material_1k_neural->vertexShader = ShaderMap::Get().GetShader<VertexShader>(device, "FullScreenRectVS");
 	material_1k_neural->pixelShader = ShaderMap::Get().GetShader<NeuralPixelShader>(device, "NeuralFullScreenRectPS");
@@ -264,10 +272,10 @@ void main(int argc, char** argv)
 	auto featuregrid3_light_1k = Texture2D::CreateFromDDS(device, L"textures/NeuralCompressed/1024_32/compressed3.dds");
 
 	auto material_light_neural_1k = std::make_shared<NeuralTextureMaterial>();
-	material_light_neural_1k->textures.push_back(featuregrid0_light_1k);
-	material_light_neural_1k->textures.push_back(featuregrid1_light_1k);
-	material_light_neural_1k->textures.push_back(featuregrid2_light_1k);
-	material_light_neural_1k->textures.push_back(featuregrid3_light_1k);
+	material_light_neural_1k->SetTexture(0, featuregrid0_light_1k, "FeatureGrid0");
+	material_light_neural_1k->SetTexture(1, featuregrid1_light_1k, "FeatureGrid1");
+	material_light_neural_1k->SetTexture(2, featuregrid2_light_1k, "FeatureGrid2");
+	material_light_neural_1k->SetTexture(3, featuregrid3_light_1k, "FeatureGrid3");
 
 	material_light_neural_1k->vertexShader = ShaderMap::Get().GetShader<VertexShader>(device, "FullScreenRectVS");
 	material_light_neural_1k->pixelShader = ShaderMap::Get().GetShader<NeuralPixelShaderLight<32>>(device, "Light32NeuralFullScreenRectPS");
@@ -283,10 +291,10 @@ void main(int argc, char** argv)
 	auto featuregrid3_light_2k = Texture2D::CreateFromDDS(device, L"textures/NeuralCompressed/2048_32/compressed3.dds");
 
 	auto material_light_neural_2k = std::make_shared<NeuralTextureMaterial>();
-	material_light_neural_2k->textures.push_back(featuregrid0_light_2k);
-	material_light_neural_2k->textures.push_back(featuregrid1_light_2k);
-	material_light_neural_2k->textures.push_back(featuregrid2_light_2k);
-	material_light_neural_2k->textures.push_back(featuregrid3_light_2k);
+	material_light_neural_2k->SetTexture(0, featuregrid0_light_2k, "FeatureGrid0");
+	material_light_neural_2k->SetTexture(1, featuregrid1_light_2k, "FeatureGrid1");
+	material_light_neural_2k->SetTexture(2, featuregrid2_light_2k, "FeatureGrid2");
+	material_light_neural_2k->SetTexture(3, featuregrid3_light_2k, "FeatureGrid3");
 
 	material_light_neural_2k->vertexShader = ShaderMap::Get().GetShader<VertexShader>(device, "FullScreenRectVS");
 	material_light_neural_2k->pixelShader = ShaderMap::Get().GetShader<NeuralPixelShaderLight<32>>(device, "Light32NeuralFullScreenRectPS");
@@ -333,85 +341,7 @@ void main(int argc, char** argv)
 		device.Render(deltaTime);
 
 
-		if (ImGuiHandler.IsInitialized())
-		{
-			PIXScopedEvent(device.GetCommandList(), 0, L"ImGui");
-
-			//	//imgui render
-			ImGuiHandler.NewFrame();
-
-			//window pos is right upper
-			const int uiwidth = 300;
-			int posX = window.GetWidth() - 300;
-			int posY = 0;
-			ImGui::SetNextWindowPos(ImVec2((float)posX, (float)posY));
-			ImGui::SetNextWindowSize(ImVec2(uiwidth, 400), ImGuiCond_Once);
-			ImGui::SetNextWindowBgAlpha(0.35f);
-			
-			ImGuiWindowFlags window_flags = 0;
-			window_flags |= ImGuiWindowFlags_NoTitleBar;
-
-			bool open = false;
-			ImGui::Begin("Performance", &open, window_flags);
-			ImGui::Text("FPS: %.2f", frameTimer.GetFPS());
-			ImGui::Text("Frame Time: %.2fms", frameTimer.GetFrameTime() * 1000);
-			ImGui::Separator();
-			ImGui::Text("Memory Usage: %.2f/%.2fGB", gPerformanceStats.memoryUsage / 1024.0f, gPerformanceStats.memoryBudget / 1024.0f);
-
-
-			static bool vsync = false;
-			ImGui::Checkbox("VSYNC", &vsync);
-			device.SetVsync(vsync);
-
-			//Slider to change view scale
-			ImGui::SeparatorText("View");
-			ImGui::SliderFloat("View Scale", &device.rectConstantBuffer.scale, 0.2f, 1.0f);
-
-			//Slider to change light position
-			ImGui::SeparatorText("Light");
-			ImGui::SliderFloat("PosX", &device.rectConstantBuffer.lightpos, -1.0f, 1.0f);
-
-			//Slider to change light intensity
-			ImGui::SliderFloat("Intensity", &device.rectConstantBuffer.intensity, 0.0f, 5.0f);
-
-			ImGui::SeparatorText("Material");
-			ImGui::SliderFloat("Metalness", &device.rectConstantBuffer.metalness, 0.0f, 1.0f);
-
-			ImGui::End();
-
-			//Resource Description view window
-			posY = 400;
-			ImGui::SetNextWindowPos(ImVec2((float)posX, (float)posY));
-			ImGui::SetNextWindowSize(ImVec2(300, 500), ImGuiCond_Once);
-			ImGui::SetNextWindowBgAlpha(0.35f);
-
-			ImGui::Begin("Material Description", &open);
-
-			static int currentItem = 0;	
-			std::vector<const char*> items;
-			for (auto& item : materialMap)
-			{
-				items.push_back(item.first.c_str());
-			}
-
-			ImGui::Combo("Material", &currentItem, items.data(), (int)items.size());
-
-			CurrentMaterial = materialMap[items[currentItem]];
-			
-			//draw texture info
-			for (auto& texture : CurrentMaterial->textures)
-			{
-				ImGui::Separator();
-
-				DrawTextureInfo(*texture);
-			}
-				
-
-			ImGui::End();
-
-
-			ImGuiHandler.Render(device);
-		}
+		DrawImGui(ImGuiHandler, device, window, frameTimer, materialMap, CurrentMaterial);
 
 		device.Present();
 
@@ -421,5 +351,88 @@ void main(int argc, char** argv)
 	// Cleanup
 	ImGuiHandler.Shutdown();
 	device.Cleanup();
+}
+
+void DrawImGui(ImGuiHandler& ImGuiHandler, D3D12GraphicsDevice& device, Window& window, FrameTimer& frameTimer, std::unordered_map<std::string, MaterialPtr>& materialMap, MaterialPtr& CurrentMaterial)
+{
+	if (ImGuiHandler.IsInitialized())
+	{
+		PIXScopedEvent(device.GetCommandList(), 0, L"ImGui");
+
+		//	//imgui render
+		ImGuiHandler.NewFrame();
+
+		//window pos is right upper
+		const int uiwidth = 300;
+		int posX = window.GetWidth() - 300;
+		int posY = 0;
+		ImGui::SetNextWindowPos(ImVec2((float)posX, (float)posY));
+		ImGui::SetNextWindowSize(ImVec2(uiwidth, 400), ImGuiCond_Once);
+		ImGui::SetNextWindowBgAlpha(0.35f);
+
+		ImGuiWindowFlags window_flags = 0;
+		window_flags |= ImGuiWindowFlags_NoTitleBar;
+
+		bool open = false;
+		ImGui::Begin("Performance", &open, window_flags);
+		ImGui::Text("FPS: %.2f", frameTimer.GetFPS());
+		ImGui::Text("Frame Time: %.2fms", frameTimer.GetFrameTime() * 1000);
+		ImGui::Separator();
+		ImGui::Text("Memory Usage: %.2f/%.2fGB", gPerformanceStats.memoryUsage / 1024.0f, gPerformanceStats.memoryBudget / 1024.0f);
+
+
+		static bool vsync = false;
+		ImGui::Checkbox("VSYNC", &vsync);
+		device.SetVsync(vsync);
+
+		//Slider to change view scale
+		ImGui::SeparatorText("View");
+		ImGui::SliderFloat("View Scale", &device.rectConstantBuffer.scale, 0.2f, 2.0f);
+
+		//Slider to change light position
+		ImGui::SeparatorText("Light");
+		ImGui::SliderFloat("PosX", &device.rectConstantBuffer.lightpos, -1.0f, 1.0f);
+
+		//Slider to change light intensity
+		ImGui::SliderFloat("Intensity", &device.rectConstantBuffer.intensity, 0.0f, 5.0f);
+
+		ImGui::SeparatorText("Material");
+		ImGui::SliderFloat("Metalness", &device.rectConstantBuffer.metalness, 0.0f, 1.0f);
+
+		ImGui::End();
+
+		//Resource Description view window
+		posY = 400;
+		ImGui::SetNextWindowPos(ImVec2((float)posX, (float)posY));
+		ImGui::SetNextWindowSize(ImVec2(300, 500), ImGuiCond_Once);
+		ImGui::SetNextWindowBgAlpha(0.35f);
+
+		ImGui::Begin("Material Description", &open);
+
+		static int currentItem = 0;
+		std::vector<const char*> items;
+		for (auto& item : materialMap)
+		{
+			items.push_back(item.first.c_str());
+		}
+
+		ImGui::Combo("Material", &currentItem, items.data(), (int)items.size());
+
+		CurrentMaterial = materialMap[items[currentItem]];
+
+		//draw texture info
+		for (auto& textureSlot : CurrentMaterial->GetTextureSlots())
+		{
+			ImGui::Separator();
+
+			DrawTextureInfo(textureSlot);
+		}
+
+
+		ImGui::End();
+
+
+		ImGuiHandler.Render(device);
+	}
 }
 

@@ -7,6 +7,16 @@
 #include "Texture2D.h"
 #include "d3dx12.h"
 
+void Material::SetTexture(int slotIndex, Texture2DPtr texture, const std::string& name)
+{
+	if (textureSlots.size() <= slotIndex)
+	{
+		textureSlots.resize(slotIndex + 1);
+	}
+	textureSlots[slotIndex].texture = texture;
+	textureSlots[slotIndex].name = name;
+}
+
 void Material::BuildPSO(D3D12GraphicsDevice& device)
 {
 	//create pso
@@ -48,12 +58,34 @@ void Material::BuildPSO(D3D12GraphicsDevice& device)
 void Material::SetShaderParameters(D3D12GraphicsDevice& device)
 {
 	//set shader parameters
+	std::vector<Texture2DPtr> textures;
+	CollectTextures(textures);
+
 	pixelShader->SetShaderParameters(device, textures, device.rectConstantBuffer);
+}
+
+void Material::CollectTextures(std::vector<Texture2DPtr>& textures)
+{
+	for (auto& textureSlot : textureSlots)
+	{
+		if (textureSlot.bEnable && textureSlot.texture)
+		{
+			textures.push_back(textureSlot.texture);
+		}
+		else
+		{
+			textures.push_back(Texture2D::WhiteTexture);
+		}
+	}
 }
 
 void NeuralTextureMaterial::SetShaderParameters(D3D12GraphicsDevice& device)
 {
 	auto neuralpixelShader = std::dynamic_pointer_cast<NeuralPixelShader>(pixelShader);
+
+	//set shader parameters
+	std::vector<Texture2DPtr> textures;
+	CollectTextures(textures);
 
 	neuralpixelShader->SetShaderParameters(device, textures, device.rectConstantBuffer, model);
 }
