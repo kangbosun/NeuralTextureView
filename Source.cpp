@@ -256,44 +256,44 @@ void main(int argc, char** argv)
 
 	materialMap["1K_Neural"] = material_1k_neural;
 
-	//neural texture 2k material
-	auto featuregrid0_2k = Texture2D::CreateFromDDS(device, L"textures/NeuralCompressed/2048/compressed0.dds");
-	auto featuregrid1_2k = Texture2D::CreateFromDDS(device, L"textures/NeuralCompressed/2048/compressed1.dds");
-	auto featuregrid2_2k = Texture2D::CreateFromDDS(device, L"textures/NeuralCompressed/2048/compressed2.dds");
-	auto featuregrid3_2k = Texture2D::CreateFromDDS(device, L"textures/NeuralCompressed/2048/compressed3.dds");
 
-	auto material_2k_neural = std::make_shared<NeuralTextureMaterial>();
-	material_2k_neural->textures.push_back(featuregrid0_2k);
-	material_2k_neural->textures.push_back(featuregrid1_2k);
-	material_2k_neural->textures.push_back(featuregrid2_2k);
-	material_2k_neural->textures.push_back(featuregrid3_2k);
+	// light weight neural texture material 1k, 32 nodes
+	auto featuregrid0_light_1k = Texture2D::CreateFromDDS(device, L"textures/NeuralCompressed/1024_32/compressed0.dds");
+	auto featuregrid1_light_1k = Texture2D::CreateFromDDS(device, L"textures/NeuralCompressed/1024_32/compressed1.dds");
+	auto featuregrid2_light_1k = Texture2D::CreateFromDDS(device, L"textures/NeuralCompressed/1024_32/compressed2.dds");
+	auto featuregrid3_light_1k = Texture2D::CreateFromDDS(device, L"textures/NeuralCompressed/1024_32/compressed3.dds");
 
-	material_2k_neural->vertexShader = ShaderMap::Get().GetShader<VertexShader>(device, "FullScreenRectVS");
-	material_2k_neural->pixelShader = ShaderMap::Get().GetShader<NeuralPixelShader>(device, "NeuralFullScreenRectPS");
+	auto material_light_neural_1k = std::make_shared<NeuralTextureMaterial>();
+	material_light_neural_1k->textures.push_back(featuregrid0_light_1k);
+	material_light_neural_1k->textures.push_back(featuregrid1_light_1k);
+	material_light_neural_1k->textures.push_back(featuregrid2_light_1k);
+	material_light_neural_1k->textures.push_back(featuregrid3_light_1k);
 
-	material_2k_neural->model = NeuralModel::LoadModel("textures/NeuralCompressed/2048/decodermodel.json");
+	material_light_neural_1k->vertexShader = ShaderMap::Get().GetShader<VertexShader>(device, "FullScreenRectVS");
+	material_light_neural_1k->pixelShader = ShaderMap::Get().GetShader<NeuralPixelShaderLight<32>>(device, "Light32NeuralFullScreenRectPS");
 
-	materialMap["2K_Neural"] = material_2k_neural;
+	material_light_neural_1k->model = NeuralModel::LoadModel("textures/NeuralCompressed/1024_32/decodermodel.json");
 
-	// light weight neural texture material
-	auto featuregrid0_light = Texture2D::CreateFromDDS(device, L"textures/NeuralCompressed/2048_LW/compressed0.dds");
-	auto featuregrid1_light = Texture2D::CreateFromDDS(device, L"textures/NeuralCompressed/2048_LW/compressed1.dds");
-	auto featuregrid2_light = Texture2D::CreateFromDDS(device, L"textures/NeuralCompressed/2048_LW/compressed2.dds");
-	auto featuregrid3_light = Texture2D::CreateFromDDS(device, L"textures/NeuralCompressed/2048_LW/compressed3.dds");
+	materialMap["1K_Neural_Light_32"] = material_light_neural_1k;
 
-	auto material_light_neural = std::make_shared<NeuralTextureMaterial>();
-	material_light_neural->textures.push_back(featuregrid0_light);
-	material_light_neural->textures.push_back(featuregrid1_light);
-	material_light_neural->textures.push_back(featuregrid2_light);
-	material_light_neural->textures.push_back(featuregrid3_light);
+	// light weight neural texture material 2k, 32 nodes
+	auto featuregrid0_light_2k = Texture2D::CreateFromDDS(device, L"textures/NeuralCompressed/2048_32/compressed0.dds");
+	auto featuregrid1_light_2k = Texture2D::CreateFromDDS(device, L"textures/NeuralCompressed/2048_32/compressed1.dds");
+	auto featuregrid2_light_2k = Texture2D::CreateFromDDS(device, L"textures/NeuralCompressed/2048_32/compressed2.dds");
+	auto featuregrid3_light_2k = Texture2D::CreateFromDDS(device, L"textures/NeuralCompressed/2048_32/compressed3.dds");
 
-	material_light_neural->vertexShader = ShaderMap::Get().GetShader<VertexShader>(device, "FullScreenRectVS");
-	material_light_neural->pixelShader = ShaderMap::Get().GetShader<NeuralPixelShaderLight>(device, "LightNeuralFullScreenRectPS");
+	auto material_light_neural_2k = std::make_shared<NeuralTextureMaterial>();
+	material_light_neural_2k->textures.push_back(featuregrid0_light_2k);
+	material_light_neural_2k->textures.push_back(featuregrid1_light_2k);
+	material_light_neural_2k->textures.push_back(featuregrid2_light_2k);
+	material_light_neural_2k->textures.push_back(featuregrid3_light_2k);
 
-	material_light_neural->model = NeuralModel::LoadModel("textures/NeuralCompressed/2048_LW/decodermodel.json");
+	material_light_neural_2k->vertexShader = ShaderMap::Get().GetShader<VertexShader>(device, "FullScreenRectVS");
+	material_light_neural_2k->pixelShader = ShaderMap::Get().GetShader<NeuralPixelShaderLight<32>>(device, "Light32NeuralFullScreenRectPS");
 
-	materialMap["2K_Neural_Light"] = material_light_neural;
+	material_light_neural_2k->model = NeuralModel::LoadModel("textures/NeuralCompressed/2048_32/decodermodel.json");
 
+	materialMap["2K_Neural_Light_32"] = material_light_neural_2k;
 
 	auto CurrentMaterial = material_4K_png;
 

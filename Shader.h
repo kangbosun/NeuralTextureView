@@ -179,6 +179,7 @@ public:
 
 
 //Lightweight version NeuralPixelShader
+template<int Node = 16>
 class NeuralPixelShaderLight : public NeuralPixelShader
 {
 protected:
@@ -187,6 +188,14 @@ protected:
 		NeuralPixelShader::GetDefines(defines);
 
 		defines.push_back({ "LIGHT_WEIGHT_NN", "1" });
+		if (Node == 16)
+		{
+			defines.push_back({ "NODE_COUNT", "16" });
+		}
+		else if (Node == 32)
+		{
+			defines.push_back({ "NODE_COUNT", "32" });
+		}
 	}
 };
 

@@ -22,6 +22,7 @@ public:
 
 typedef std::shared_ptr<Material> MaterialPtr;
 
+
 class NeuralTextureMaterial : public Material
 {
 public:

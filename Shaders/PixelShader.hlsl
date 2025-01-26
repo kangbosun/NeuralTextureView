@@ -125,14 +125,20 @@ NNOutputs forward(float input[14])
 #endif
 
 #if LIGHT_WEIGHT_NN
-//layer 0 = 14, layer1 = 16, layer2 = 8
+
+//#ifndef NODE_COUNT
+//#define NODE_COUNT 16
+//#endif //NODE_COUNT
+
+//layer 0 = 14, layer1 = NODE_COUNT, layer2 = 8
 NNOutputs forward(float input[14])
 {
-    float layer1[16];
+    const int nodeCount = NODE_COUNT;
+    float layer1[nodeCount];
     float output[8];
     
     // Layer 1 계산
-    for (int i0 = 0; i0 < 16; i0++)
+    for (int i0 = 0; i0 < NODE_COUNT; i0++)
     {
         layer1[i0] = nnBiases[i0];
         
@@ -151,10 +157,10 @@ NNOutputs forward(float input[14])
     // Output Layer 계산 (Sigmoid)
     for (int i2 = 0; i2 < 8; i2++)
     {
-        output[i2] = nnBiases[16 + i2]; // 초기 편향값 추가
-        for (int j = 0; j < 16; j+=4)
+        output[i2] = nnBiases[NODE_COUNT + i2]; // 초기 편향값 추가
+        for (int j = 0; j < NODE_COUNT; j+=4)
         {
-            float weightOffset = 16 * 14 + i2 * 16 + j;
+            float weightOffset = NODE_COUNT * 14 + i2 * NODE_COUNT + j;
             float4 l1 = float4(layer1[j], layer1[j + 1], layer1[j + 2], layer1[j + 3]);
             float4 w1 = float4(nnWeights[weightOffset], nnWeights[weightOffset + 1], nnWeights[weightOffset + 2], nnWeights[weightOffset + 3]);
             output[i2] += dot(w1, l1);
